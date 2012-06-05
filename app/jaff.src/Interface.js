@@ -10,34 +10,42 @@
  * @returns {jaff.Interface} A new interface
  */
 jaff.Interface = function(parentInterface, methods) {
-	return create(parentInterface, methods);
-
-	function create(parentInterface, methods) {
+	this.initialize(parentInterface, methods);
+};
+jaff.Interface.prototype = {
+	initialize: function(parentInterface, methods) {
 		if (methods == undefined) {
 			methods = parentInterface;
 			parentInterface = null;
 		}
-		var newInterface = {
-			methods: [],
-			/** @ignore */
-			getMethods: function() {
-				return this.methods;
-			}
-		};
-		setupInterfaceFromParent(newInterface, parentInterface);
-		extendInterface(newInterface, methods);
-		return newInterface;
-	}
+		this.methods = [];
+		this.setupInterfaceFromParent(parentInterface);
+		this.extendInterface(methods);
+	},
 
-	function setupInterfaceFromParent(newInterface, parentInterface) {
+	/** @private */
+	setupInterfaceFromParent: function(parentInterface) {
 		if (parentInterface) {
-			newInterface.methods = [].concat(parentInterface.methods);
+			if (parentInterface instanceof jaff.Interface) {
+				this.methods = [].concat(parentInterface.methods);
+			} else {
+				throw 'Invalid parent Interface.';
+			}
 		}
-	}
+	},
 
-	function extendInterface(newInterface, methods) {
-		for (var index = 0; index < methods.length; index++) {
-			newInterface.methods.push(methods[index]);
+	/** @private */
+	extendInterface: function(methods) {
+		if (methods instanceof Array && methods.length > 0) {
+			console.log(this.methods, methods);
+			this.methods = this.methods.concat(methods);
+		} else {
+			throw 'Not array of Interface methods.';
 		}
+	},
+
+	getMethods: function() {
+		console.log(this.methods);
+		return [].concat(this.methods);
 	}
 };

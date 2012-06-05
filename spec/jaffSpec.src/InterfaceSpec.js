@@ -9,4 +9,9 @@ describe('jaff.Interface', function(){
 		var extendedInterface = jaff.Interface(parentInterface, ['baz', 'tim']);
 		expect(extendedInterface.getMethods()).toEqual(['foo', 'bar', 'baz', 'tim']);
 	});
+
+	it('should be an instance of Interface', function() {
+		var testInterface = jaff.Interface(['a', 'b', 'c']);
+		expect(testInterface instanceof jaff.Interface).toBeTruthy();
+	});
 });
