@@ -37,7 +37,6 @@ jaff.Interface.prototype = {
 	/** @private */
 	extendInterface: function(methods) {
 		if (methods instanceof Array && methods.length > 0) {
-			console.log(this.methods, methods);
 			this.methods = this.methods.concat(methods);
 		} else {
 			throw 'Not array of Interface methods.';
@@ -45,7 +44,16 @@ jaff.Interface.prototype = {
 	},
 
 	getMethods: function() {
-		console.log(this.methods);
 		return [].concat(this.methods);
+	},
+
+	isImplementedBy: function(testClass) {
+		var isImplemented = true;
+		for (var index = 0; index < this.methods.length; index++) {
+			if (typeof testClass.prototype[this.methods[index]] != 'function') {
+				isImplemented = false;
+			}
+		}
+		return isImplemented;
 	}
 };
