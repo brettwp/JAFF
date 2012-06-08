@@ -1,3 +1,23 @@
+/**
+ * @description Creates a new class
+ *
+ * To create a new class you can either extend the base <code>jaff.Class</code> or extend a parent class:
+ * <pre>
+ *     var vehicle = jaff.Class.extend({...})
+ *     var car = vehicle.extend({...})
+ * <pre>
+ *
+ * The <code>extend</code> function is available in all classes and takes one or two parameters.  If only
+ * one then this is an object of static variables and methods.  If two the first is a
+ * <code>jaff.Interface</code> or and array of interfaces and the second an object of static variables and
+ * methods.
+ *
+ * The new class is built from the extension object by attaching all variables to the new class; all the
+ * functions to the new class' prototype; and adding links to overloaded methods prefixing them with
+ * <code>$</code>.
+ *
+ * @returns {jaff.Class} A new class
+ */
 jaff.Class = function() {};
 jaff.Class.extend = function(interfaceOrObject, extension) {
 	var interfaces = null;

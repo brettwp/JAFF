@@ -4,8 +4,8 @@
  * @param methods {Array} An array of methods when inheriting from a parent interface.
  *
  * There are two basic ways to create and interface:
- * 1) Interface([...]) - An array of strings for the required methods of the interface
- * 2) Interface(parent, [...]) - The parent interface and an array of strings to extend the parent.
+ * 1) new Interface([...]) - An array of strings for the required methods of the interface
+ * 2) new Interface(parent, [...]) - The parent interface and an array of strings to extend the parent.
  *
  * @returns {jaff.Interface} A new interface
  */
