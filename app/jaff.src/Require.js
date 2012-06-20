@@ -1,5 +1,8 @@
 (function() {
 	var timeout = null;
+	var recheckDuration = 50;
+	var maxRecheck = 40;
+	var timesChecked = 0;
 	var allRequirements = [];
 
 	jaff.Require = function(requirements, callFunction) {
@@ -10,25 +13,36 @@
 			require: requirements,
 			func: callFunction
 		});
+		timesChecked = 0;
 		callFulfilled();
 	}
 
 	function callFulfilled() {
 		if (timeout) clearTimeout(timeout);
-		for (var i=0; i < allRequirements.length; i++) {
-			checkAndCall(i);
+		allRequirements = allRequirements.filter(callFunction);
+		timesChecked++;
+		if (timesChecked > maxRecheck) {
+			alert('Unmet requirements!');
+			console.log(allRequirements);
+		} else if (allRequirements.length > 0) {
+			setTimeout(function() {
+				callFulfilled();
+			}, recheckDuration);
 		}
 	}
 
-	function checkAndCall(index) {
-		var job = allRequirements[index];
-		var len = job.require.length;
-		for (var i=0; i < len; i++) {
-			if (doesNotExist(job.require[i])) break;
+	function callFunction(testObject) {
+		var allExist = allRequirementsExist(testObject.require);
+		if (allExist) testObject.func();
+		return !allExist;
+	}
+
+	function allRequirementsExist(requirements) {
+		var i, len = requirements.length;
+		for (i=0; i < len; i++) {
+			if (doesNotExist(requirements[i])) break;
 		}
-		if (i == len) {
-			job.func();
-		}
+		return (i == len);
 	}
 
 	function doesNotExist(name) {
