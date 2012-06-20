@@ -31,10 +31,29 @@ this.jaff = this.jaff || {};
 /** @ignore */
 jaff.VERSION = '0.1.0';
 
+/**
+ * @description Creates a new class
+ *
+ * To create a new class you can either extend the base <code>jaff.Class</code> or extend a parent class:
+ * <pre>
+ *     var vehicle = jaff.Class.extend({...})
+ *     var car = vehicle.extend({...})
+ * <pre>
+ *
+ * The <code>extend</code> function is available in all classes and takes one or two parameters.  If only
+ * one then this is an object of static variables and methods.  If two the first is a
+ * <code>jaff.Interface</code> or and array of interfaces and the second an object of static variables and
+ * methods.
+ *
+ * The new class is built from the extension object by attaching all variables to the new class; all the
+ * functions to the new class' prototype; and adding links to overloaded methods prefixing them with
+ * <code>$</code>.
+ *
+ * @returns {jaff.Class} A new class
+ */
 jaff.Class = function() {};
 jaff.Class.extend = function(interfaceOrObject, extension) {
 	var interfaces = null;
-	console.log(interfaceOrObject, extension);
 	if (extension == undefined) {
 		extension = interfaceOrObject;
 	} else if (interfaceOrObject instanceof Array || interfaceOrObject instanceof jaff.Interface) {
@@ -128,8 +147,8 @@ jaff.Class.extend = function(interfaceOrObject, extension) {
  * @param methods {Array} An array of methods when inheriting from a parent interface.
  *
  * There are two basic ways to create and interface:
- * 1) Interface([...]) - An array of strings for the required methods of the interface
- * 2) Interface(parent, [...]) - The parent interface and an array of strings to extend the parent.
+ * 1) new Interface([...]) - An array of strings for the required methods of the interface
+ * 2) new Interface(parent, [...]) - The parent interface and an array of strings to extend the parent.
  *
  * @returns {jaff.Interface} A new interface
  */
@@ -181,4 +200,66 @@ jaff.Interface.prototype = {
 		return isImplemented;
 	}
 };
+
+(function() {
+	var timeout = null;
+	var recheckDuration = 50;
+	var maxRecheck = 40;
+	var timesChecked = 0;
+	var allRequirements = [];
+
+	jaff.Require = function(requirements, callFunction) {
+		if (typeof requirements == 'string') {
+			requirements = [requirements];
+		}
+		allRequirements.push({
+			require: requirements,
+			func: callFunction
+		});
+		timesChecked = 0;
+		callFulfilled();
+	}
+
+	function callFulfilled() {
+		if (timeout) clearTimeout(timeout);
+		allRequirements = allRequirements.filter(callFunction);
+		timesChecked++;
+		if (timesChecked > maxRecheck) {
+			alert('Unmet requirements!');
+			console.log(allRequirements);
+		} else if (allRequirements.length > 0) {
+			setTimeout(function() {
+				callFulfilled();
+			}, recheckDuration);
+		}
+	}
+
+	function callFunction(testObject) {
+		var allExist = allRequirementsExist(testObject.require);
+		if (allExist) testObject.func();
+		return !allExist;
+	}
+
+	function allRequirementsExist(requirements) {
+		var i, len = requirements.length;
+		for (i=0; i < len; i++) {
+			if (doesNotExist(requirements[i])) break;
+		}
+		return (i == len);
+	}
+
+	function doesNotExist(name) {
+		var start = window;
+		var parts = name.split('.');
+		var len = parts.length;
+		for (var i=0; i < len; i++) {
+			if (start.hasOwnProperty(parts[i])) {
+				start = start[parts[i]];
+			} else {
+				break;
+			}
+		}
+		return (i != len);
+	}
+})();
 
