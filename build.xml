@@ -5,15 +5,16 @@
 
 	<target name="jaff">
 		<concat destfile="${jaffBase}.js" fixlastline="yes">
-			<filelist dir="${jaffBase}.src" files="_header.js"/>
-			<fileset dir="${jaffBase}.src" includes="*.js" excludes="_header.js"/>
+			<filelist dir="${jaffBase}.src" files="header.js"/>
+			<fileset dir="${jaffBase}.src/core" includes="*.js"/>
+			<filelist dir="${jaffBase}.src" files="footer.js"/>
 		</concat>
 	</target>
 
 	<target name="jaffSpec">
 		<concat destfile="${specBase}.js" fixlastline="yes">
-			<filelist dir="${specBase}.src" files="_header.js"/>
-			<fileset dir="${specBase}.src" includes="*.js" excludes="_header.js"/>
+			<filelist dir="${specBase}.src" files="header.js"/>
+			<fileset dir="${specBase}.src/core" includes="*.js"/>
 		</concat>
 	</target>
 </project>

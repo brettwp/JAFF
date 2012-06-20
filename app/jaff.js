@@ -23,13 +23,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/**
- *  @namespace Contains the core functions <code>Class</code> and <code>Interface</code> along
- *  with all sub-namespaces of the JAFF library.
- */
-this.jaff = this.jaff || {};
-/** @ignore */
-jaff.VERSION = '0.1.0';
+(function(window) {
+	/**
+	 *  @namespace Contains the core functions <code>Class</code> and <code>Interface</code> along
+	 *  with all sub-namespaces of the JAFF library.
+	 */
+	window.jaff = window.jaff || {};
+	/** @ignore */
+	jaff.VERSION = '0.1.1';
 
 /**
  * @description Creates a new class
@@ -262,4 +263,6 @@ jaff.Interface.prototype = {
 		return (i != len);
 	}
 })();
+
+})(window);
 
