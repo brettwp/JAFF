@@ -395,7 +395,8 @@ describe('jaff.Audible', function () {
 				this.v2 = true;
 			}
 		});
-	})
+	});
+
 	it('should call all listeners to an event', function () {
 		var objectA = new this.testClass();
 		var objectB = new this.testClass();
@@ -410,6 +411,7 @@ describe('jaff.Audible', function () {
 		expect(objectA.v2).toBeTruthy();
 		expect(objectB.v2).toBeFalsy();
 	});
+
 	it('should remove a listener', function () {
 		var testObject = new this.testClass();
 		var test = (new jaff.util.Audible()).
