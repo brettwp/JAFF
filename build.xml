@@ -7,6 +7,7 @@
 		<concat destfile="${jaffBase}.js" fixlastline="yes">
 			<filelist dir="${jaffBase}.src" files="header.js"/>
 			<fileset dir="${jaffBase}.src/core" includes="*.js"/>
+			<fileset dir="${jaffBase}.src/util" includes="*.js"/>
 			<filelist dir="${jaffBase}.src" files="footer.js"/>
 		</concat>
 	</target>
@@ -15,6 +16,7 @@
 		<concat destfile="${specBase}.js" fixlastline="yes">
 			<filelist dir="${specBase}.src" files="header.js"/>
 			<fileset dir="${specBase}.src/core" includes="*.js"/>
+			<fileset dir="${specBase}.src/util" includes="*.js"/>
 		</concat>
 	</target>
 </project>
