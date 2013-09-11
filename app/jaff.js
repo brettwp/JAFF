@@ -1,5 +1,5 @@
 /*!
- * JAFF JavaScript Library v0.1.0
+ * JAFF JavaScript Library v0.1.1
  * http://www.github.com/brettwp/JAFF
  * Copyright (c) 2012 Brett Pontarelli
  *
