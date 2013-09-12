@@ -1,12 +1,5 @@
-//= require_self
-//= require_tree ./src
-
 /*!
-<<<<<<< HEAD:app/jaff.src/header.js
- * JAFF JavaScript Library v0.1.1
-=======
  * JAFF JavaScript Library v0.2.0
->>>>>>> cleanup:source/javascripts/all.js
  * http://www.github.com/brettwp/JAFF
  * Copyright (c) 2013 Brett Pontarelli
  *
@@ -31,9 +24,11 @@
  * THE SOFTWARE.
  */
 
+//= require_self
+//= require_tree ./src
+
 /**
- *  @namespace Contains the core functions <code>Class</code> and <code>Interface</code> along
- *  with all sub-namespaces of the JAFF library.
+ *  @namespace Main namespace for JAFF library.
  */
 window.Jaff = {};
 
