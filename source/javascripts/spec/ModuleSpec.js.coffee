@@ -21,7 +21,7 @@ describe 'Jaff.Module', ->
       specModule.define(spy)
       expect(spy).toHaveBeenCalled()
 
-    it 'should call (not) again on next define if requirements are unmet', ->
+    it 'should call again on next define if requirements are unmet', ->
       specModule.testRequirement2 = true
       specModule.testFunc1 = ->
         specModule.require('specModule.testRequirement1')
@@ -33,7 +33,7 @@ describe 'Jaff.Module', ->
       specModule.define(specModule.testFunc2)
       specModule.define(->)
       expect(specModule.testFunc1).toHaveBeenCalled()
-      expect(specModule.testFunc1.calls.length).toBe(3)
+      expect(specModule.testFunc1.calls.length).toBe(5)
       expect(specModule.testFunc2).toHaveBeenCalled()
       expect(specModule.testFunc2.calls.length).toBe(1)
 
@@ -58,9 +58,15 @@ describe 'Jaff.Module', ->
       expect(specModule.testFunc1.calls.length).toBe(3)
       expect(specModule.testFunc2.calls.length).toBe(2)
       expect(specModule.testFunc3.calls.length).toBe(1)
-      expect(specModule.finish()).toBe(false)
       specModule.define(specModule.testFunc4)
-      expect(specModule.finish()).toBe(true)
-      expect(specModule.testFunc1.calls.length).toBe(8)
-      expect(specModule.testFunc2.calls.length).toBe(6)
-      expect(specModule.testFunc3.calls.length).toBe(4)
+      expect(specModule.testFunc1.calls.length).toBe(7)
+      expect(specModule.testFunc2.calls.length).toBe(5)
+      expect(specModule.testFunc3.calls.length).toBe(3)
+      specModule.define(->)
+      expect(specModule.testFunc1.calls.length).toBe(7)
+      expect(specModule.testFunc2.calls.length).toBe(5)
+      expect(specModule.testFunc3.calls.length).toBe(3)
+
+    it 'should re-throw other errors', ->
+      testFunc = -> specModule.define(-> throw('!'))
+      expect(testFunc).toThrow()

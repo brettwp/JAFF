@@ -20,17 +20,14 @@ class Jaff.Module
     @callFulfilledModules()
     @
 
-  finish: ->
+  #* @private
+  callFulfilledModules: ->
     stop = false
     while !stop
       previousLength = @modules.length
-      @callFulfilledModules()
+      @modules = @modules.filter(@callFunction)
       stop = (previousLength == @modules.length || @modules.length == 0)
     @modules.length == 0
-
-  #* @private
-  callFulfilledModules: ->
-    @modules = @modules.filter(@callFunction)
 
   #* @private
   callFunction: (callback) ->
