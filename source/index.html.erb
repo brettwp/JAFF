@@ -3,11 +3,11 @@
 <head>
   <title>Jasmine Spec Runner</title>
   <!-- <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.3.1/jasmine_favicon.png"> -->
-  <link rel="stylesheet" type="text/css" href="/stylesheets/jasmine.css">
-  <script type="text/javascript" src="/javascripts/lib/jasmine.js"></script>
-  <script type="text/javascript" src="/javascripts/lib/jasmine-html.js"></script>
-  <script type="text/javascript" src="/javascripts/all.js"></script>
-  <script type="text/javascript" src="/javascripts/spec.js"></script>
+  <%= stylesheet_link_tag 'jasmine' %>
+  <%= javascript_include_tag 'lib/jasmine' %>
+  <%= javascript_include_tag 'lib/jasmine-html' %>
+  <%= javascript_include_tag 'all.js' %>
+  <%= javascript_include_tag 'spec.js' %>
 
   <script type="text/javascript">
     (function() {
