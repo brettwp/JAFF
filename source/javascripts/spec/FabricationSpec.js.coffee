@@ -6,18 +6,19 @@ describe 'Jaff.Fabrication', ->
     constructor: ->
       @args = arguments
 
-  beforeEach ->
-    factory = new Jaff.Fabrication()
-    callback = ->
-      a: 'a'
-      b: 'b'
-    factory.fabricator(TestClass, callback)
-
   describe 'fabricator', ->
     it 'should accept a key and a function', ->
+      factory = new Jaff.Fabrication()
       factory.fabricator(TestClass, ->)
 
   describe 'fabricate', ->
+    beforeEach ->
+      factory = new Jaff.Fabrication()
+      callback = ->
+        a: 'a'
+        b: 'b'
+      factory.fabricator(TestClass, callback)
+
     it 'should call the function for a key', ->
       spy = jasmine.createSpy()
       factory.fabricator(TestClass, spy)
@@ -45,6 +46,13 @@ describe 'Jaff.Fabrication', ->
       expect(newClass.args).toEqual([{a:'a', b:'b'}, {x:1, y:2}, 1, 2, false])
 
   describe 'attributes_for', ->
+    beforeEach ->
+      factory = new Jaff.Fabrication()
+      callback = ->
+        a: 'a'
+        b: 'b'
+      factory.fabricator(TestClass, callback)
+
     it 'should only return the callback results', ->
       attrs = factory.attributes_for(TestClass)
       expect(attrs).toEqual({a:'a', b:'b'})
@@ -56,3 +64,13 @@ describe 'Jaff.Fabrication', ->
     it 'should ignore additional arguments', ->
       attrs = factory.attributes_for(TestClass, {a:'x', opt:'opt'}, 1, 2, false)
       expect(attrs).toEqual({a:'x', b:'b', opt:'opt'})
+
+  describe 'canFabricate', ->
+    beforeEach ->
+      factory = new Jaff.Fabrication()
+
+    it 'should return true for key + function', ->
+      factory.fabricator(TestClass, ->)
+      expect(factory.canFabricate(TestClass)).toBe(true)
+      factory.fabricator(TestClass, 'nope')
+      expect(factory.canFabricate('fail')).toBe(false)

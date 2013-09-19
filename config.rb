@@ -4,7 +4,7 @@ set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
 
-set :version, '0.3.0'
+set :version, '0.3.1'
 
 configure :build do
   activate :minify_css

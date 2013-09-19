@@ -1,13 +1,28 @@
 describe 'Jaff.Module', ->
+  afterEach ->
+    delete window.specModule
+
   describe 'require', ->
-    it 'should return the object', ->
+    beforeEach ->
       window.specModule = new Jaff.Module()
+
+    it 'should return the object', ->
       specModule.testObject = { subObject: { value: null } }
       localObject = specModule.require('specModule.testObject.subObject')
       localObject.value = 42
       expect(localObject).toBe(specModule.testObject.subObject)
       expect(localObject.value).toBe(42)
       expect(specModule.testObject.subObject.value).toBe(42)
+
+    it 'should accept a function that returns true', ->
+      require = -> specModule.require(-> true)
+      expect(require).not.toThrow()
+      require = -> specModule.require(-> false)
+      expect(require).toThrow()
+
+    it 'should pass through if function throws it\'s own error', ->
+      require = -> specModule.require(-> throw('!'))
+      expect(require).toThrow('!')
 
   describe 'define', ->
     beforeEach ->

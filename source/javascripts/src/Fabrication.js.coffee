@@ -2,8 +2,8 @@ class Jaff.Fabrication
   constructor: ->
     @fabricators = {}
 
-  fabricator: (key, callback) ->
-    @fabricators[key] = callback
+  fabricator: (classFunc, callback) ->
+    @fabricators[classFunc] = callback
 
   fabricate: ->
     [args, classFunc, attributes] = @extract.apply(@, arguments)
@@ -14,6 +14,10 @@ class Jaff.Fabrication
     [args, classFunc, attributes] = @extract.apply(@, arguments)
     attributes
 
+  canFabricate: (classFunc) ->
+    typeof @fabricators[classFunc] == 'function'
+
+  #* @private
   extract: ->
     args = Array.prototype.slice.call(arguments)
     classFunc = args.shift()

@@ -4,7 +4,14 @@ class Jaff.Module
   constructor: ->
     @modules = []
 
-  require: (name) ->
+  require: (nameOrFunction) ->
+    if typeof nameOrFunction == 'function'
+      @requireFunction(nameOrFunction)
+    else
+      @requireName(nameOrFunction)
+
+  #* @private
+  requireName: (name) ->
     start = window
     parts = name.split('.')
     for part, index in parts
@@ -14,6 +21,10 @@ class Jaff.Module
         break
     throw new RequirementNotFoundException() if index != parts.length
     start
+
+  #* @private
+  requireFunction: (func) ->
+    throw new RequirementNotFoundException() if func() != true
 
   define: (callback) ->
     @modules.push(callback) if typeof callback == 'function'
