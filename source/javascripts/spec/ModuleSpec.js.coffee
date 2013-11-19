@@ -85,3 +85,15 @@ describe 'Jaff.Module', ->
     it 'should re-throw other errors', ->
       testFunc = -> specModule.define(-> throw('!'))
       expect(testFunc).toThrow()
+
+    it 'should stop calling if other error thrown', ->
+      specModule.testFunc1 = -> specModule.define(-> throw('!'))
+      specModule.testFunc2 = -> specModule.define(->)
+      spyOn(specModule, 'testFunc1').andCallThrough()
+      spyOn(specModule, 'testFunc2').andCallThrough()
+      expect(specModule.testFunc1).toThrow()
+      expect(specModule.testFunc2).not.toThrow()
+      expect(specModule.testFunc1).toHaveBeenCalled()
+      expect(specModule.testFunc1.calls.length).toBe(1)
+      expect(specModule.testFunc2).toHaveBeenCalled()
+      expect(specModule.testFunc2.calls.length).toBe(1)
