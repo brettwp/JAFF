@@ -1,17 +1,27 @@
 RequirementNotFoundException = (->)
 
 class Jaff.Module
-  constructor: ->
-    @modules = []
+  constructor: (source) ->
+    @__modules = []
+    extend(@, source)
+
+  #* @private
+  extend = (destination, source) ->
+    for property of source
+      if (typeof source[property] == 'object' && source[property] != null)
+        destination[property] = destination[property] || {}
+        arguments.callee(destination[property], source[property])
+      else
+        destination[property] = source[property]
 
   require: (nameOrFunction) ->
     if typeof nameOrFunction == 'function'
-      @requireFunction(nameOrFunction)
+      requireFunction(nameOrFunction)
     else
-      @requireName(nameOrFunction)
+      requireName(nameOrFunction)
 
   #* @private
-  requireName: (name) ->
+  requireName = (name) ->
     start = window
     parts = name.split('.')
     for part, index in parts
@@ -23,25 +33,28 @@ class Jaff.Module
     start
 
   #* @private
-  requireFunction: (func) ->
+  requireFunction = (func) ->
     throw new RequirementNotFoundException() if func() != true
 
   define: (callback) ->
-    @modules.push(callback) if typeof callback == 'function'
-    @callFulfilledModules()
+    if typeof callback == 'function'
+      if callFunction(callback)
+        @__modules.push(callback)
+      else
+        callFulfilledModules.call(@)
     @
 
   #* @private
-  callFulfilledModules: ->
+  callFulfilledModules = ->
     stop = false
     while !stop
-      previousLength = @modules.length
-      @modules = @modules.filter(@callFunction)
-      stop = (previousLength == @modules.length || @modules.length == 0)
-    @modules.length == 0
+      previousLength = @__modules.length
+      @__modules = @__modules.filter(callFunction)
+      stop = (previousLength == @__modules.length || @__modules.length == 0)
+    @__modules.length == 0
 
   #* @private
-  callFunction: (callback) ->
+  callFunction = (callback) ->
     callAgain = false
     try
       callback()
