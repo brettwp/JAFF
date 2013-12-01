@@ -2,6 +2,18 @@ describe 'Jaff.Module', ->
   afterEach ->
     delete window.specModule
 
+  it 'should extend itself with the passed object', ->
+    specModule = new Jaff.Module(
+      a: [1, 2, 3],
+      o: { k: 'v1' },
+      f: ((x) -> x*x),
+      k: 'v2'
+    );
+    expect(specModule.a).toEqual([1,2,3]);
+    expect(specModule.o.k).toEqual('v1');
+    expect(specModule.f(2)).toEqual(4);
+    expect(specModule.k).toEqual('v2');
+
   describe 'require', ->
     beforeEach ->
       window.specModule = new Jaff.Module()
@@ -48,7 +60,7 @@ describe 'Jaff.Module', ->
       specModule.define(specModule.testFunc2)
       specModule.define(->)
       expect(specModule.testFunc1).toHaveBeenCalled()
-      expect(specModule.testFunc1.calls.length).toBe(5)
+      expect(specModule.testFunc1.calls.length).toBe(3)
       expect(specModule.testFunc2).toHaveBeenCalled()
       expect(specModule.testFunc2.calls.length).toBe(1)
 
@@ -70,17 +82,17 @@ describe 'Jaff.Module', ->
       specModule.define(specModule.testFunc1)
       specModule.define(specModule.testFunc2)
       specModule.define(specModule.testFunc3)
-      expect(specModule.testFunc1.calls.length).toBe(3)
-      expect(specModule.testFunc2.calls.length).toBe(2)
+      expect(specModule.testFunc1.calls.length).toBe(1)
+      expect(specModule.testFunc2.calls.length).toBe(1)
       expect(specModule.testFunc3.calls.length).toBe(1)
       specModule.define(specModule.testFunc4)
-      expect(specModule.testFunc1.calls.length).toBe(7)
-      expect(specModule.testFunc2.calls.length).toBe(5)
-      expect(specModule.testFunc3.calls.length).toBe(3)
+      expect(specModule.testFunc1.calls.length).toBe(4)
+      expect(specModule.testFunc2.calls.length).toBe(3)
+      expect(specModule.testFunc3.calls.length).toBe(2)
       specModule.define(->)
-      expect(specModule.testFunc1.calls.length).toBe(7)
-      expect(specModule.testFunc2.calls.length).toBe(5)
-      expect(specModule.testFunc3.calls.length).toBe(3)
+      expect(specModule.testFunc1.calls.length).toBe(4)
+      expect(specModule.testFunc2.calls.length).toBe(3)
+      expect(specModule.testFunc3.calls.length).toBe(2)
 
     it 'should re-throw other errors', ->
       testFunc = -> specModule.define(-> throw('!'))
