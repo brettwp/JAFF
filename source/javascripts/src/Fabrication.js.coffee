@@ -6,19 +6,19 @@ class Jaff.Fabrication
     @fabricators[classFunc] = callback
 
   fabricate: ->
-    [args, classFunc, attributes] = @extract.apply(@, arguments)
+    [args, classFunc, attributes] = extract.apply(@, arguments)
     args.unshift(null, attributes)
     new (classFunc.bind.apply(classFunc, args))
 
   attributes_for: ->
-    [args, classFunc, attributes] = @extract.apply(@, arguments)
+    [args, classFunc, attributes] = extract.apply(@, arguments)
     attributes
 
   canFabricate: (classFunc) ->
     typeof @fabricators[classFunc] == 'function'
 
   #* @private
-  extract: ->
+  extract = ->
     args = Array.prototype.slice.call(arguments)
     classFunc = args.shift()
     overrides = args.shift()

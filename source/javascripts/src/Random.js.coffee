@@ -1,6 +1,6 @@
 class Jaff.Random
-  constructor: ->
-    @seed(1)
+  constructor: (seed)->
+    @seed(seed || 1)
 
   seed: (seed) ->
     seed = seed >>> 0

@@ -21,6 +21,15 @@ describe 'Jaff.Random', ->
     r.seed(seed)
     expect(r.current()).toEqual(current / max)
 
+  it 'should seed on instantiation', ->
+    seed = 1234567890
+    x = (seed >>> 16) + 4125832013
+    y = (seed & 0xffff) + 814584116
+    z = 542
+    current = (x ^ y ^ z) >>> 0
+    r = new Jaff.Random(seed)
+    expect(r.current()).toEqual(current / max)
+
   it 'should advance to next number', ->
     seed = 2345678901
     x = (seed >>> 16) + 4125832013
