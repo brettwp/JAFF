@@ -1,4 +1,6 @@
 describe 'Jaff.Random', ->
+  max = Math.pow(2, 32)
+
   mult = (a, b) ->
     ah = a >>> 16
     al = a & 0xffff
@@ -17,7 +19,7 @@ describe 'Jaff.Random', ->
     current = (x ^ y ^ z) >>> 0
     r = new Jaff.Random()
     r.seed(seed)
-    expect(r.current()).toEqual(current)
+    expect(r.current()).toEqual(current / max)
 
   it 'should advance to next number', ->
     seed = 2345678901
@@ -37,7 +39,7 @@ describe 'Jaff.Random', ->
     next = (x ^ y ^ z) >>> 0
     r = new Jaff.Random()
     r.seed(seed)
-    expect(r.next()).toEqual(next)
+    expect(r.next()).toEqual(next / max)
 
   it 'should advance again for good measure', ->
     seed = 3456789012
@@ -69,7 +71,7 @@ describe 'Jaff.Random', ->
     r = new Jaff.Random()
     r.seed(seed)
     r.next()
-    expect(r.next()).toEqual(next)
+    expect(r.next()).toEqual(next / max)
 
   it 'should get and set state', ->
     r = new Jaff.Random()
@@ -79,5 +81,5 @@ describe 'Jaff.Random', ->
     expect(r.getState()).not.toEqual(initialState)
     r.setState(initialState)
     expect(r.current()).toEqual(numbers[0])
-    # expect(r.next()).toEqual(numbers[1])
-    # expect(r.next()).toEqual(numbers[2])
+    expect(r.next()).toEqual(numbers[1])
+    expect(r.next()).toEqual(numbers[2])

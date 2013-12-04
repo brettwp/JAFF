@@ -16,7 +16,7 @@ class Jaff.Random
     @current()
 
   current: ->
-    (@x ^ @y ^ @z) >>> 0
+    ((@x ^ @y ^ @z) >>> 0) / 4294967296
 
   getState: ->
     toHex = (value) -> ('00000000' + value.toString(16)).substr(-8)
