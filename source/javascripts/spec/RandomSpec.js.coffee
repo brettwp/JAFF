@@ -92,3 +92,17 @@ describe 'Jaff.Random', ->
     expect(r.current()).toEqual(numbers[0])
     expect(r.next()).toEqual(numbers[1])
     expect(r.next()).toEqual(numbers[2])
+
+  it 'should random seed if not passed a seed', ->
+    r = new Jaff.Random()
+    r.seed(0)
+    v0 = r.next()
+    r.seed()
+    expect(r.next()).not.toEqual(v0)
+
+  it 'should seed 0 the same each time', ->
+    r = new Jaff.Random()
+    r.seed(0)
+    v0 = r.next()
+    r.seed(0)
+    expect(r.next()).toEqual(v0)

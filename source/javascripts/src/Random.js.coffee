@@ -3,6 +3,8 @@ class Jaff.Random
     @seed(seed || 1)
 
   seed: (seed) ->
+    max = Math.pow(2, 32)
+    seed = Math.floor(Math.random() * max) if not (seed >= 0 && seed < max)
     seed = seed >>> 0
     @x = (seed >>> 16) + 4125832013
     @y = (seed & 0xffff) + 814584116
