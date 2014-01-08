@@ -1,3 +1,4 @@
 #!/bin/bash
+rm -f lib/jaff*
 middleman build
-cp build/javascripts/all.js lib/jaff.js
+MINIFY=true middleman build
